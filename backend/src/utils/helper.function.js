@@ -1,5 +1,5 @@
 // src/utils/utils.js
-
+import fs from 'fs';
 /**
  * Converts text into URL-friendly slug
  * @param {string} text

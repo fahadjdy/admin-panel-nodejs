@@ -2,7 +2,7 @@ import pool from "../config/db.js";
 
 class ProfileModel {
   static async getProfile() {
-    const [rows] = await pool.query("SELECT * FROM company_profile WHERE id=1");
+    const [rows] = await pool.query("SELECT * FROM profile WHERE id=1");
     return rows[0] || {};
   }
 
@@ -18,7 +18,7 @@ class ProfileModel {
       }
     });
 
-    const sql = `UPDATE company_profile SET ${updates.join(", ")}, updated_at=NOW() WHERE id=1`;
+    const sql = `UPDATE profile SET ${updates.join(", ")}, updated_at=NOW() WHERE id=1`;
     return pool.query(sql, params);
   }
 }

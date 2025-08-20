@@ -11,7 +11,7 @@ export const register = async (req, res) => {
   try {
     const [existing] = await pool.query("SELECT * FROM users WHERE email = ?", [email]);
     if (existing.length > 0) {
-      return res.status(400).json({ message: "Email already registered" });
+      return res.status(400).json({status: false, message: "Email already registered" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -33,18 +33,18 @@ export const login = async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM users WHERE email = ?", [email]);
     if (rows.length === 0) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ status: false, message: "Invalid email or password" });
     }
 
     const user = rows[0];
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ status: false, message: "Invalid email or password" });
     }
 
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
-    res.json({ success: true, token });
+    res.json({ success: true, token, user: { id: user.id, name: user.name, email: user.email,created_at: user.created_at, updated_at: user.updated_at} });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
