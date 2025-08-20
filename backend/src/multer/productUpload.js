@@ -1,7 +1,7 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-import ensureFolderExists from "../utils/helper.function.js";
+import { ensureFolderExists } from "../utils/helper.function.js";
 
 const uploadPath = "uploads/";
 if (!fs.existsSync(uploadPath)) fs.mkdirSync(uploadPath);

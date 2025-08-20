@@ -1,7 +1,7 @@
 import { Router } from "express";
 import ProductController from "../controllers/product/ProductController.js";
-import authMiddleware from "../middleware/authMiddleware.js";
-import { productUpload, handleMulterError } from "../multer/productUpload.js";
+import { authMiddleware } from  "../middleware/authMiddleware.js";
+import { productUpload } from "../multer/productUpload.js";
 
 const router = Router();
 
@@ -16,7 +16,6 @@ router.post(
   "/",
   authMiddleware,
   productUpload.array("images", 10),
-  handleMulterError,
   ProductController.addProduct
 );
 
@@ -25,7 +24,6 @@ router.put(
   "/:id", 
   authMiddleware, 
   productUpload.array("images", 10),
-  handleMulterError,
   ProductController.update
 );
 

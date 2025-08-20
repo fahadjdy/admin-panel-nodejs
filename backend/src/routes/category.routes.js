@@ -1,7 +1,7 @@
 // src/routes/category.routes.js
 import { Router } from "express";
 import CategoryController from "../controllers/category/CategoryController.js";
-import authMiddleware from "../middleware/authMiddleware.js";
+import { authMiddleware } from  "../middleware/authMiddleware.js";
 import { categoryUpload } from "../multer/categoryUpload.js";
 
 const router = Router();

@@ -1,7 +1,7 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-import ensureFolderExists from "../utils/helper.function.js";
+import  { ensureFolderExists} from "../utils/helper.function.js";
 
 const uploadPath = "uploads/";
 if (!fs.existsSync(uploadPath)) {
@@ -27,4 +27,4 @@ const fileFilter = (req, file, cb) => {
   else cb(new Error("Invalid file type"), false);
 };
 
-export const upload = multer({ storage, fileFilter });
+export const profileUpload = multer({ storage, fileFilter });
