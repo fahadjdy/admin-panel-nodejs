@@ -6,27 +6,6 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"; // set in .env
 const JWT_EXPIRATION = process.env.JWT_EXPIRATION || "1h";
 
-// Register user
-export const register = async (req, res) => {
-  const { name, email, password } = req.body;
-  try {
-    const [existing] = await pool.query("SELECT * FROM users WHERE email = ?", [email]);
-    if (existing.length > 0) {
-      return res.status(400).json({status: false, message: "Email already registered" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await pool.query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [
-      name,
-      email,
-      hashedPassword
-    ]);
-
-    res.json({ success: true, message: "User registered successfully" });
-  } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-};
 
 // Login user
 export const login = async (req, res) => {

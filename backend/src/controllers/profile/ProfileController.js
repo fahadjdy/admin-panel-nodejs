@@ -36,7 +36,7 @@ class ProfileController {
 
     try {
       
-      const user_id =  1; 
+      const user_id =  req.user.id; 
       const currentProfile = await ProfileModel.findByUserId(user_id);
 
       if (!currentProfile) {

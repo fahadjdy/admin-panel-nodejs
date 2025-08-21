@@ -1,28 +1,31 @@
-import pool from "../config/db.js";
+import pool from "../config/db.js";  // relative path must be correct
 
 class UsersModel {
-  // Create new user
+  
   static async create({ name, email, password }) {
+
     const sql = `
       INSERT INTO users (name, email, password)
       VALUES (?, ?, ?)
     `;
+    console.log(sql);
     const [result] = await pool.query(sql, [name, email, password]);
-    return result.insertId; // return new user id
+    return result.insertId; 
   }
 
   // Update user
   static async update(id, data) {
-    const fields = ["name", "email", "password"];
+    const allowedFields = ["name", "email", "password"];
     const updates = [];
     const params = [];
 
-    fields.forEach((field) => {
-      if (data[field] !== undefined && data[field] !== null) {
-        updates.push(`${field} = ?`);
-        params.push(data[field]);
+    // Only include fields that are provided
+    for (const key of allowedFields) {
+      if (data[key] !== undefined && data[key] !== null) {
+        updates.push(`${key} = ?`);
+        params.push(data[key]);
       }
-    });
+    }
 
     if (updates.length === 0) {
       return { affectedRows: 0 }; // nothing to update
@@ -39,21 +42,26 @@ class UsersModel {
     return result;
   }
 
+
   // Delete user
   static async delete(id) {
-    const [result] = await pool.query("DELETE FROM users WHERE id = ?", [id]);
-    return result;
+     return pool.query(
+      `UPDATE users 
+       SET is_deleted=1, deleted_at=NOW() 
+       WHERE id=?`,
+      [id]
+    );
   }
 
   // Find by ID
   static async findById(id) {
-    const [rows] = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
+    const [rows] = await pool.query("SELECT * FROM users WHERE id = ? and is_deleted = 0", [id]);
     return rows[0] || null;
   }
 
   // Find by Email
   static async findByEmail(email) {
-    const [rows] = await pool.query("SELECT * FROM users WHERE email = ?", [email]);
+    const [rows] = await pool.query("SELECT * FROM users WHERE email = ? and is_deleted = 0", [email]);
     return rows[0] || null;
   }
 }
