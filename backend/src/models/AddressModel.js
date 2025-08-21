@@ -1,34 +1,58 @@
 import pool from "../config/db.js";
 
 class AddressModel {
-  static async getAddresses(companyId = 1) {
+  // Get all addresses (ignoring deleted)
+  static async getAddresses() {
     const [rows] = await pool.query(
-      "SELECT * FROM company_addresses WHERE company_id=?",
-      [companyId]
+      "SELECT * FROM address WHERE is_deleted = 0"
     );
     return rows;
   }
 
-  static async addAddress({ address, map_link }, companyId = 1) {
+  // Add a new address (optional fields allowed)
+  static async addAddress({ address = null, city = null, state = null, pincode = null, map = null }) {
     return pool.query(
-      `INSERT INTO company_addresses 
-        (company_id, address, map_link) 
-       VALUES (?, ?, ?)`,
-      [companyId, address, map_link]
+      `INSERT INTO address 
+        (address, city, state, pincode, map) 
+       VALUES (?, ?, ?, ?, ?)`,
+      [address, city, state, pincode, map]
     );
   }
 
-  static async updateAddress(id, { address, map_link }) {
-    return pool.query(
-      `UPDATE company_addresses 
-       SET address=?, map_link=?, updated_at=NOW() 
-       WHERE id=?`,
-      [address, map_link, id]
-    );
+  // Update an address (only updates provided fields)
+  static async updateAddress(id, data) {
+    const fields = [];
+    const values = [];
+
+    // Build dynamic query based on provided fields
+    for (const [key, value] of Object.entries(data)) {
+      if (["address", "city", "state", "pincode", "map"].includes(key)) {
+        fields.push(`${key}=?`);
+        values.push(value);
+      }
+    }
+
+    if (fields.length === 0) return; // nothing to update
+
+    values.push(id);
+
+    const query = `
+      UPDATE address 
+      SET ${fields.join(", ")}, updated_at=NOW()
+      WHERE id=? AND is_deleted=0
+    `;
+
+    return pool.query(query, values);
   }
 
+  // Soft delete
   static async deleteAddress(id) {
-    return pool.query("DELETE FROM company_addresses WHERE id=?", [id]);
+    return pool.query(
+      `UPDATE address 
+       SET is_deleted=1, deleted_at=NOW() 
+       WHERE id=?`,
+      [id]
+    );
   }
 }
 

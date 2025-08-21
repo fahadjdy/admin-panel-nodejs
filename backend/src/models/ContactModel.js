@@ -3,7 +3,7 @@ import pool from "../config/db.js";
 class ContactModel {
   static async getContactById(contact_id) {
     const [rows] = await pool.query(
-      "SELECT * FROM company_contacts where id = ?",
+      "SELECT * FROM contact where id = ?",
       [contact_id]
     );
     return rows;
@@ -11,7 +11,7 @@ class ContactModel {
   
   static async getContactByContact(mobile) {
     const [rows] = await pool.query(
-      "SELECT * FROM company_contacts where mobile = ?",
+      "SELECT * FROM contact where mobile = ?",
       [mobile]
     );
     return rows;
@@ -19,20 +19,20 @@ class ContactModel {
 
   static async getContacts() {
     const [rows] = await pool.query(
-      "SELECT * FROM company_contacts"
+      "SELECT * FROM contact"
     );
     return rows;
   }
 
   static async addContact(mobile) {
     return pool.query(
-      "INSERT INTO company_contacts ( mobile) VALUES (?)",
+      "INSERT INTO contact ( mobile) VALUES (?)",
       [mobile]
     );
   }
 
   static async deleteContact(id) {
-    return pool.query("DELETE FROM company_contacts WHERE id=?", [id]);
+    return pool.query("DELETE FROM contact WHERE id=?", [id]);
   }
 }
 

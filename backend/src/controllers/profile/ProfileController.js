@@ -1,48 +1,79 @@
 import ProfileModel from "../../models/ProfileModel.js";
-import fs from 'fs/promises';
-import path from 'path';
+import fs from "fs/promises";
+import path from "path";
 
 class ProfileController {
+  // Get profile by user_id (assuming req.user.id from auth middleware)
   static async getProfile(req, res) {
     try {
-      const profile = await ProfileModel.getProfile();
+      const userId = req.session.user.id; // depends on your auth system
+      const profile = await ProfileModel.findByUserId(userId);
+
+      if (!profile) {
+        return res.status(404).json({ error: "Profile not found" });
+      }
+
       res.json(profile);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
   }
 
-  static async updateProfile(req, res) {
-    const { name, email, company_name, about_us, slogan } = req.body;
+  // Update profile
+  static async update(req, res) {
+    
+    const {
+      owner_name,
+      email,
+      company_name,
+      about_company,
+      slogan,
+      is_maintainance
+    } = req.body;
+
     const logo = req.files?.logo ? req.files.logo[0].filename : null;
     const favicon = req.files?.favicon ? req.files.favicon[0].filename : null;
 
     try {
-      // Get current profile data to access existing file names
-      const currentProfile = await ProfileModel.getProfile();
       
-      // Remove existing files if new ones are uploaded
-      if (logo && currentProfile.logo) {
-        const existingLogoPath = path.join('uploads/profile/', currentProfile.logo); 
-        await fs.unlink(existingLogoPath);         
-      }
-      
-      if (favicon && currentProfile.favicon) {
-        const existingFaviconPath = path.join('uploads/profile/', currentProfile.favicon);
-        await fs.unlink(existingFaviconPath);        
+      const user_id =  1; 
+      const currentProfile = await ProfileModel.findByUserId(user_id);
+
+      if (!currentProfile) {
+        return res.status(404).json({ error: "Profile not found" });
       }
 
-      // Update profile with new data
-      await ProfileModel.updateProfile({ 
-        name, 
-        email, 
-        company_name, 
-        about_us, 
-        slogan, 
-        logo: logo || currentProfile.logo, // Keep existing if no new file uploaded
-        favicon: favicon || currentProfile.favicon // Keep existing if no new file uploaded
+      // Remove old files if new ones are uploaded
+      if (logo && currentProfile.logo) {
+        const existingLogoPath = path.join("uploads/profile/", currentProfile.logo);
+        try {
+          await fs.unlink(existingLogoPath);
+        } catch (_) {
+          /* ignore missing file */
+        }
+      }
+
+      if (favicon && currentProfile.favicon) {
+        const existingFaviconPath = path.join("uploads/profile/", currentProfile.favicon);
+        try {
+          await fs.unlink(existingFaviconPath);
+        } catch (_) {
+          /* ignore missing file */
+        }
+      }
+
+      // Update profile
+      await ProfileModel.update(currentProfile.id, {
+        owner_name,
+        email,
+        company_name,
+        about_company,
+        slogan,
+        is_maintainance,
+        logo: logo || currentProfile.logo,
+        favicon: favicon || currentProfile.favicon
       });
-      
+
       res.json({ success: true, message: "Profile updated successfully" });
     } catch (err) {
       res.status(500).json({ error: err.message });

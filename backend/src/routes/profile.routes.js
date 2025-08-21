@@ -6,7 +6,7 @@ import { authMiddleware } from  "../middleware/authMiddleware.js";
 const router = express.Router();
 
 // Get profile
-router.get("/",  ProfileController.getProfile);
-router.put("/",authMiddleware,profileUpload.fields([{ name: "logo", maxCount: 1 }, { name: "favicon", maxCount: 1 }]),ProfileController.updateProfile);
+router.get("/", ProfileController.getProfile);
+router.put("/",authMiddleware,profileUpload.fields([{ name: "logo", maxCount: 1 }, { name: "favicon", maxCount: 1 }]),ProfileController.update);
 
 export default router;

@@ -1,6 +1,7 @@
 import AddressModel from "../../models/AddressModel.js";
 
 class AddressController {
+  // Get all addresses
   static async getAddresses(req, res) {
     try {
       const addresses = await AddressModel.getAddresses();
@@ -10,27 +11,31 @@ class AddressController {
     }
   }
 
+  // Add new address (all fields optional)
   static async addAddress(req, res) {
-    const { address, map_link } = req.body;
+    const { address, city, state, pincode, map } = req.body;
     try {
-      await AddressModel.addAddress({ address, map_link });
+      await AddressModel.addAddress({ address, city, state, pincode, map });
       res.json({ success: true, message: "Address added successfully" });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
   }
 
+  // Update an address (only provided fields will be updated)
   static async updateAddress(req, res) {
     const { id } = req.params;
-    const { address, map_link } = req.body;
+    const { address, city, state, pincode, map } = req.body;
+
     try {
-      await AddressModel.updateAddress(id, { address, map_link });
+      await AddressModel.updateAddress(id, { address, city, state, pincode, map });
       res.json({ success: true, message: "Address updated successfully" });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
   }
 
+  // Soft delete an address
   static async deleteAddress(req, res) {
     const { id } = req.params;
     try {

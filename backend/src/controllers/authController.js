@@ -2,8 +2,9 @@ import pool from "../config/db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "mysecretkey";
-const JWT_EXPIRES_IN = "1h"; // adjust as needed
+
+const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"; // set in .env
+const JWT_EXPIRATION = process.env.JWT_EXPIRATION || "1h";
 
 // Register user
 export const register = async (req, res) => {
@@ -42,9 +43,18 @@ export const login = async (req, res) => {
       return res.status(400).json({ status: false, message: "Invalid email or password" });
     }
 
-    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+     // ✅ Generate JWT token
+    const token = jwt.sign(
+      {
+        id: user.id,
+        name: user.name,
+        email: user.email
+      },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRATION } 
+    );
 
-    res.json({ success: true, token, user: { id: user.id, name: user.name, email: user.email,created_at: user.created_at, updated_at: user.updated_at} });
+    res.json({ success: true, message: "Login successful", token: token });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
@@ -53,18 +63,8 @@ export const login = async (req, res) => {
 // Logout user
 export const logout = async (req, res) => {
   try {
-    const token = req.headers["authorization"]?.split(" ")[1];
-    if (!token) return res.status(400).json({ message: "No token provided" });
-
-    const decoded = jwt.decode(token);
-    if (!decoded) return res.status(400).json({ message: "Invalid token" });
-
-    const expiresAt = new Date(decoded.exp * 1000);
-
-    await pool.query("INSERT INTO token_blacklist (token, expires_at) VALUES (?, ?)", [
-      token,
-      expiresAt
-    ]);
+   // ✅ Destroy session
+    req.session.destroy();
 
     res.json({ success: true, message: "Logged out successfully" });
   } catch (err) {
