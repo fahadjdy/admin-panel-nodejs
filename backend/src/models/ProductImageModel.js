@@ -1,47 +1,53 @@
-// src/models/ProductImageModel.js
 import pool from "../config/db.js";
+import fs from "fs";
+import path from "path";
 
 class ProductImageModel {
-
   static table = "product_images";
+
+  // Get images for a product (excluding deleted)
   static async getByProductId(product_id) {
     const [rows] = await pool.query(
-      "SELECT * FROM " + table + " WHERE product_id = ? ORDER BY is_primary DESC, id ASC",
+      `SELECT * FROM ${this.table} WHERE product_id = ? AND is_deleted = 0 ORDER BY is_primary DESC, id ASC`,
       [product_id]
     );
     return rows;
   }
 
+  static async getById(id) {
+    const [rows] = await pool.query(
+      `SELECT * FROM ${this.table} WHERE id = ? AND is_deleted = 0`,
+      [id]
+    );
+    return rows[0] || null;
+  }
+
   static async addProductImage({ product_id, image, is_primary = false }) {
     const [result] = await pool.query(
-      "INSERT INTO "+table+" (product_id, image, is_primary) VALUES (?, ?, ?)",
+      `INSERT INTO ${this.table} (product_id, image, is_primary) VALUES (?, ?, ?)`,
       [product_id, image, is_primary]
     );
     return result.insertId;
   }
 
   static async setPrimary(id, product_id) {
-    // Reset all images to false first
-    await pool.query("UPDATE "+table+" SET is_primary = FALSE WHERE product_id = ?", [product_id]);
-    // Set selected image as primary
-    await pool.query("UPDATE "+table+" SET is_primary = TRUE WHERE id = ?", [id]);
+    await pool.query(`UPDATE ${this.table} SET is_primary = FALSE WHERE product_id = ?`, [product_id]);
+    await pool.query(`UPDATE ${this.table} SET is_primary = TRUE WHERE id = ?`, [id]);
     return true;
   }
 
+  // Soft delete by id
   static async delete(id) {
-    await pool.query("DELETE FROM "+table+" WHERE id = ?", [id]);
+    // Mark as deleted instead of removing record
+    await pool.query(`UPDATE ${this.table} SET is_deleted = 1, deleted_at = NOW() WHERE id = ?`, [id]);
     return true;
   }
 
-    static async deleteByProductId(product_id) {
-      const images = await this.getByProductId(product_id);
-      images.forEach((img) => {
-        const filePath = path.join(process.cwd(), img.image);
-        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-      });
-      await db.query("DELETE FROM "+table+" WHERE product_id = ?", [product_id]);
-    }
-
+  // Soft delete all images for a product
+  static async deleteByProductId(product_id) {
+    const images = await this.getByProductId(product_id);
+    await pool.query(`UPDATE ${this.table} SET is_deleted = 1, deleted_at = NOW() WHERE product_id = ?`, [product_id]);
+  }
 }
 
 export default ProductImageModel;

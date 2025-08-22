@@ -19,16 +19,18 @@ router.post(
   ProductController.addProduct
 );
 
-// Update product details (with optional image updates)
+// Update product details
 router.put(
   "/:id", 
   authMiddleware, 
-  productUpload.array("images", 10),
   ProductController.update
 );
 
-// Delete product (also deletes images from disk)
+// Delete product 
 router.delete("/:id", authMiddleware, ProductController.delete);
+
+// Add product image
+router.post("/image", authMiddleware, productUpload.array("image",10), ProductController.addProductImage);
 
 // Set primary image
 router.put("/image/primary/:id/:product_id", authMiddleware, ProductController.setPrimaryImage);
