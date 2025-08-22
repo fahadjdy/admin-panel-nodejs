@@ -6,7 +6,7 @@ class ProfileController {
   // Get profile by user_id (assuming req.user.id from auth middleware)
   static async getProfile(req, res) {
     try {
-      const userId = req.session.user.id; // depends on your auth system
+      const userId = req.user.id; 
       const profile = await ProfileModel.findByUserId(userId);
 
       if (!profile) {
@@ -63,7 +63,7 @@ class ProfileController {
       }
 
       // Update profile
-      await ProfileModel.update(currentProfile.id, {
+       await ProfileModel.update(currentProfile.id, {
         owner_name,
         email,
         company_name,
@@ -74,7 +74,7 @@ class ProfileController {
         favicon: favicon || currentProfile.favicon
       });
 
-      res.json({ success: true, message: "Profile updated successfully" });
+      res.json({ success: true, message: "Profile updated successfully" , result: await ProfileModel.findByUserId(1)});
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

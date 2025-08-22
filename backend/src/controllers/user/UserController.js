@@ -1,4 +1,5 @@
 import UsersModel from "../../models/UserModel.js";
+import ProfileModel from "../../models/ProfileModel.js";
 import bcrypt from "bcrypt";
 
 class UsersController {
@@ -16,9 +17,12 @@ class UsersController {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Create user
-      const userId = await UsersModel.create({ name, email, password: hashedPassword });
+      const user_id = await UsersModel.create({ name, email, password: hashedPassword });
 
-      res.json({ success: true, message: "User registered successfully", userId });
+      // Create profile for the new user
+      await ProfileModel.create(user_id);
+
+      res.json({ success: true, message: "User registered successfully", user_id });
     } catch (err) {
       res.status(500).json({ success: false, error: err.message });
     }
@@ -27,10 +31,12 @@ class UsersController {
   // Update user
   static async update(req, res) {
     try {
-      const { id } = req.params;
-      const { name, email, password } = req.body;
+      const { name, email, password, status, remark } = req.body;
+      const { id } = req.params; // ✅ get id from params
 
       const data = {};
+      if (status) data.status = status;
+      if (remark) data.remark = remark;
       if (name) data.name = name;
       if (email) data.email = email;
       if (password) {
@@ -38,13 +44,25 @@ class UsersController {
         data.password = await bcrypt.hash(password, 10);
       }
 
+      const is_exist = await UsersModel.findById(id);
+      if (!is_exist) {
+        return res.status(404).json({ success: false, message: "User not found" });
+      }
+
       const result = await UsersModel.update(id, data);
 
       if (result.affectedRows === 0) {
-        return res.status(404).json({ success: false, message: "No fields to update or user not found" });
+        return res.status(404).json({ 
+          success: false, 
+          message: "No fields to update or user not found" 
+        });
       }
 
-      res.json({ success: true, message: "User updated successfully", affectedRows: result.affectedRows });
+      res.json({ 
+        success: true, 
+        message: "User updated successfully", 
+        affectedRows: result.affectedRows 
+      });
     } catch (err) {
       res.status(500).json({ success: false, error: err.message });
     }

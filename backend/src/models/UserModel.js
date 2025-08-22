@@ -2,6 +2,14 @@ import pool from "../config/db.js";  // relative path must be correct
 
 class UsersModel {
   
+  // name : string;
+  // email : string;
+  // password : string;
+  // status : Enumerator("Active","Inactive");
+  // remark : string;
+  
+  static allowedFields = ["name", "email", "password","status","remark"];
+  
   static async create({ name, email, password }) {
 
     const sql = `
@@ -15,12 +23,11 @@ class UsersModel {
 
   // Update user
   static async update(id, data) {
-    const allowedFields = ["name", "email", "password"];
     const updates = [];
     const params = [];
 
     // Only include fields that are provided
-    for (const key of allowedFields) {
+    for (const key of this.allowedFields) {
       if (data[key] !== undefined && data[key] !== null) {
         updates.push(`${key} = ?`);
         params.push(data[key]);
@@ -29,6 +36,11 @@ class UsersModel {
 
     if (updates.length === 0) {
       return { affectedRows: 0 }; // nothing to update
+    }
+
+    // if status changed to active, clear remark
+    if(data['status'] == 'Active'){
+      updates.push(`remark = null`);
     }
 
     const sql = `

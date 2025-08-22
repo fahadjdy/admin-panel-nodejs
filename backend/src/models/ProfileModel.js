@@ -4,8 +4,8 @@ class ProfileModel {
   // Create profile for a new user
   static async create(user_id) {
     const sql = `
-      INSERT INTO profile (user_id, owner_name, company_name, about_company, slogan, is_maintenance)
-      VALUES (?, '', '', '', '', 0)
+      INSERT INTO profile (user_id)
+      VALUES (?)
     `;
     const [result] = await pool.query(sql, [user_id]);
     return result.insertId;
