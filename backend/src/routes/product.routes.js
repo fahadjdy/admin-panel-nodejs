@@ -33,7 +33,7 @@ router.delete("/:id", authMiddleware, ProductController.delete);
 router.post("/images/:id", authMiddleware, productUpload.array("images",10), ProductController.addProductImage);
 
 // Set primary image
-router.put("/image/primary/:id/:product_id", authMiddleware, ProductController.setPrimaryImage);
+router.put("/image/primary/:product_id/:product_image_id", authMiddleware, ProductController.setPrimaryImage);
 
 // Delete image
 router.delete("/image/:id", authMiddleware, ProductController.deleteImage);

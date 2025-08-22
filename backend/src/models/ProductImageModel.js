@@ -22,7 +22,7 @@ class ProductImageModel {
     return rows[0] || null;
   }
 
-  static async addProductImage({ product_id, image, is_primary = false }) {
+  static async addProductImage({ product_id, image, is_primary = 0 }) {
     const [result] = await pool.query(
       `INSERT INTO ${this.table} (product_id, image, is_primary) VALUES (?, ?, ?)`,
       [product_id, image, is_primary]
@@ -31,8 +31,8 @@ class ProductImageModel {
   }
 
   static async setPrimary(id, product_id) {
-    await pool.query(`UPDATE ${this.table} SET is_primary = FALSE WHERE product_id = ?`, [product_id]);
-    await pool.query(`UPDATE ${this.table} SET is_primary = TRUE WHERE id = ?`, [id]);
+    await pool.query(`UPDATE ${this.table} SET is_primary = 0 WHERE product_id = ?`, [product_id]);
+    await pool.query(`UPDATE ${this.table} SET is_primary = 1 WHERE id = ?`, [id]);
     return true;
   }
 

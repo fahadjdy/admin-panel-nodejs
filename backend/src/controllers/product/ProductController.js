@@ -135,8 +135,8 @@ class ProductController {
 
   static async setPrimaryImage(req, res) {
     try {
-      const { id, product_id } = req.params;
-      const updated = await ProductImageModel.setPrimary(id, product_id);
+      const { product_id, product_image_id } = req.params;
+      const updated = await ProductImageModel.setPrimary(product_image_id, product_id);
       if (!updated) return res.status(404).json({ success: false, message: "Image or product not found" });
       res.json({ success: true, message: "Primary image set" });
     } catch (err) {
