@@ -28,6 +28,23 @@ class CategoryModel {
     return rows[0];
   }
 
+  static async isAlreadyExist(slug, parent_id = null) {
+    let query = "";
+    let params = [];
+
+    if (parent_id === null) {
+      // parent_id is NULL
+      query = "SELECT * FROM categories WHERE slug = ? AND parent_id IS NULL AND is_deleted = 0";
+      params = [slug];
+    } else {
+      query = "SELECT * FROM categories WHERE slug = ? AND parent_id = ? AND is_deleted = 0";
+      params = [slug, parent_id];
+    }
+
+    const [rows] = await pool.query(query, params);
+    return rows[0] || null;
+  }
+
   // Create new category
   static async create({
     parent_id = null,
