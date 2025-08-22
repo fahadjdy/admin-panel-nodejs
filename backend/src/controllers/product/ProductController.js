@@ -1,5 +1,6 @@
 import ProductModel from "../../models/ProductModel.js";
 import ProductImageModel from "../../models/ProductImageModel.js";
+import CategoryModel from "../../models/CategoryModel.js";
 import { slugify } from "../../utils/helper.function.js";
 import fs from "fs";
 import path from "path";
@@ -45,6 +46,11 @@ class ProductController {
       if (!name || !category_id) return res.status(400).json({ success: false, message: "Name and category required" });
 
       const slug = slugify(name);
+
+      // Check if category exists
+      const is_exist = await ProductModel.getBySlug(slug);
+      if (is_exist) return res.status(400).json({ success: false, message: "Product already exists" });
+
       const productId = await ProductModel.addProduct({ name, slug, description, category_id, status });
 
       // Save product images
@@ -63,7 +69,7 @@ class ProductController {
 
   static async addProductImage(req, res) {
     try {
-      const { product_id } = req.body;
+      const product_id  = req.params.id;
       if (!product_id) return res.status(400).json({ success: false, message: "Product ID is required" });
       if (!req.files || req.files.length === 0) return res.status(400).json({ success: false, message: "No images uploaded" });
 
@@ -93,6 +99,11 @@ class ProductController {
       const { category_id, name, description, status } = req.body;
       const slug = name ? slugify(name) : product.slug;
 
+      if(category_id){
+        const is_category_exist = await CategoryModel.getById(category_id);
+        if (!is_category_exist) return res.status(404).json({ success: false, message: "Category not found" });
+      }
+
       await ProductModel.update(req.params.id, {
         category_id: category_id || product.category_id,
         name: name || product.name,
@@ -116,7 +127,7 @@ class ProductController {
       await ProductImageModel.deleteByProductId(req.params.id);
       await ProductModel.delete(req.params.id);
 
-      res.json({ success: true, message: "Product deleted (soft)" });
+      res.json({ success: true, message: "Product deleted!" });
     } catch (err) {
       res.status(500).json({ success: false, error: err.message });
     }
@@ -135,12 +146,12 @@ class ProductController {
 
   static async deleteImage(req, res) {
     try {
-      const { id } = req.params;
+      const  id = req.params.id;
       const image = await ProductImageModel.getById(id);
       if (!image) return res.status(404).json({ success: false, message: "Image not found" });
 
       deleteFiles([path.join(process.cwd(), 'uploads', 'products', path.basename(image.image))]);
-      await ProductImageModel.deleteImage(id);
+      await ProductImageModel.delete(id);
 
       res.json({ success: true, message: "Image deleted" });
     } catch (err) {

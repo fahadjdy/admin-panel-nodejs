@@ -49,6 +49,14 @@ class ProductModel {
     );
     return true;
   }
+
+    static async getBySlug(slug) {
+    const [rows] = await pool.query(
+      "SELECT * FROM products WHERE slug = ? AND is_deleted = 0",
+      [slug]
+    );
+    return rows[0];
+  }
 }
 
 export default ProductModel;

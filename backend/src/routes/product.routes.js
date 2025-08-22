@@ -30,7 +30,7 @@ router.put(
 router.delete("/:id", authMiddleware, ProductController.delete);
 
 // Add product image
-router.post("/image", authMiddleware, productUpload.array("image",10), ProductController.addProductImage);
+router.post("/images/:id", authMiddleware, productUpload.array("images",10), ProductController.addProductImage);
 
 // Set primary image
 router.put("/image/primary/:id/:product_id", authMiddleware, ProductController.setPrimaryImage);

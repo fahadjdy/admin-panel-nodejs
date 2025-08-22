@@ -39,7 +39,7 @@ class ProductImageModel {
   // Soft delete by id
   static async delete(id) {
     // Mark as deleted instead of removing record
-    await pool.query(`UPDATE ${this.table} SET is_deleted = 1, deleted_at = NOW() WHERE id = ?`, [id]);
+    await pool.query(`DELETE FROM ${this.table}  WHERE id = ?`, [id]);
     return true;
   }
 
