@@ -7,10 +7,10 @@
 	},
 	"item": [
 		{
-			"name": "profile",
+			"name": "Profile",
 			"item": [
 				{
-					"name": "contacts",
+					"name": "Contacts",
 					"item": [
 						{
 							"name": "get contact",
@@ -108,7 +108,7 @@
 					]
 				},
 				{
-					"name": "address",
+					"name": "Address",
 					"item": [
 						{
 							"name": "get adresses",
@@ -923,6 +923,545 @@
 								{
 									"key": "id",
 									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Testimonial",
+			"item": [
+				{
+					"name": "Get All Testimonials",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/testimonial",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"testimonial"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/testimonial/:id",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"testimonial",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Testimonials",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Fahad Jdy",
+									"type": "text"
+								},
+								{
+									"key": "designation",
+									"value": "CEO, Acme Corp",
+									"type": "text"
+								},
+								{
+									"key": "message",
+									"value": "This company provided excellent service and support throughout our project. Highly recommend!",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "Published",
+									"type": "text"
+								},
+								{
+									"key": "display_order",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/home/techaxion/Downloads/profile.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/api/testimonial/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"testimonial",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Testimonials",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Fahad Jadiya",
+									"type": "text"
+								},
+								{
+									"key": "designation",
+									"value": "CEO, Acme Corp",
+									"type": "text"
+								},
+								{
+									"key": "message",
+									"value": "This company provided excellent service and support throughout our project. Highly recommend!",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "Published",
+									"type": "text"
+								},
+								{
+									"key": "display_order",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/home/techaxion/Pictures/Screenshots/Screenshot from 2025-08-25 12-35-42.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/api/testimonial/:id",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"testimonial",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Testimonials",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/testimonial/:id",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"testimonial",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gallery",
+			"item": [
+				{
+					"name": "Get All Gallery",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/gallery",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"gallery"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Gallery",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Test title",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Test description",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "Published",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/home/techaxion/Downloads/profile.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/api/gallery",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"gallery"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Gallery",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/gallery/:id",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"gallery",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Clients",
+			"item": [
+				{
+					"name": "Get All Clients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/clients",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Clients By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/clients/:id",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Clients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "First client",
+									"type": "text"
+								},
+								{
+									"key": "website",
+									"value": "test.com",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "Published",
+									"type": "text"
+								},
+								{
+									"key": "logo",
+									"type": "file",
+									"src": "/home/techaxion/Downloads/profile.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/api/clients",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Clients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "First client is this",
+									"type": "text"
+								},
+								{
+									"key": "website",
+									"value": "test.com",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "Published",
+									"type": "text"
+								},
+								{
+									"key": "logo",
+									"type": "file",
+									"src": "/home/techaxion/Pictures/Screenshots/Screenshot from 2025-08-25 12-35-42.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/api/clients/:id",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
 								}
 							]
 						}
