@@ -106,3 +106,19 @@ CREATE TABLE gallery (
   updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+CREATE TABLE `clients` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(150) NOT NULL,              -- client name (optional if you only want logo)
+  `logo` VARCHAR(255) NOT NULL,              -- path to logo image
+  `website` VARCHAR(255) DEFAULT NULL,       -- optional: link to client website
+  `status` ENUM('Draft','Published') DEFAULT 'Draft',
+  `display_order` INT DEFAULT 0,
+  `is_deleted` TINYINT(1) DEFAULT 0,
+  `deleted_at` TIMESTAMP NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

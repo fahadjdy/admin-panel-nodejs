@@ -13,6 +13,7 @@ import productRoutes from "./routes/product.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import testimonialRoutes from "./routes/testimonial.routes.js";
 import galleryRoutes from "./routes/gallery.routes.js";
+import clientsRoutes from "./routes/clients.routes.js";
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/testimonial",  testimonialRoutes);
 app.use("/api/gallery",  galleryRoutes);
+app.use("/api/clients",  clientsRoutes);
 
 
 // error handling middleware
