@@ -11,6 +11,8 @@ import contactRoutes from "./routes/contact.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import testimonialRoutes from "./routes/testimonial.routes.js";
+import galleryRoutes from "./routes/gallery.routes.js";
 
 dotenv.config();
 
@@ -44,6 +46,8 @@ app.use("/api/contacts", contactRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/testimonial",  testimonialRoutes);
+app.use("/api/gallery",  galleryRoutes);
 
 
 // error handling middleware
