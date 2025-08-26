@@ -1,27 +1,52 @@
 <template>
-  <div class="p-4">
-    <h2 class="text-2xl font-bold mb-4">Login</h2>
+  <div class="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-50 to-blue-100">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+      <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Welcome Admin 👋</h2>
 
-    <form @submit.prevent="handleLogin" class="mb-4">
-      <div class="mb-4">
-        <label for="email" class="block mb-2">Email</label>
-        <input type="email" id="email" v-model="email" class="border p-2 w-full" />
-      </div>
-      <div class="mb-4">
-        <label for="password" class="block mb-2">Password</label>
-        <input type="password" id="password" v-model="password" class="border p-2 w-full" />
-      </div>
-      <button type="submit" class="bg-blue-500 text-white px-4 py-2">Login</button>
-    </form>
+      <form @submit.prevent="handleLogin" class="space-y-5">
+        <!-- Email -->
+          <InputField
+            v-model="email"
+            id="email"
+            label="Email"
+            type="email"
+            placeholder="Enter your email"
+        />
 
-    <p v-if="error" class="text-red-500">{{ error }}</p>
+        <InputField
+            v-model="password"
+            id="password"
+            label="Password"
+            type="password"
+            placeholder="Enter your password"
+        />
+
+
+        <!-- Login Button -->
+        <UiButton type="submit" variant="primary" class="w-full py-3 text-lg rounded-lg">Login</UiButton>
+      </form>
+
+      <!-- Error message -->
+      <p v-if="error" class="mt-4 text-center text-red-500 text-sm">{{ error }}</p>
+
+      <!-- Extra Links -->
+      <div class="mt-6 text-center">
+        <p class="text-sm text-gray-500">
+          Forgot your password?
+          <a href="tel:917203070468" class="text-blue-600 font-medium hover:underline">Contact Admin</a>
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { login } from '../services/authService.js'
+import UiButton from "../components/ui/Button.vue";
+import InputField from "../components/ui/InputField.vue";
 
 export default {
+  components: { UiButton , InputField },
   data() {
     return {
       email: '',
