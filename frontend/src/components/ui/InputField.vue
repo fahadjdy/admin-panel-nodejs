@@ -40,7 +40,7 @@ export default {
 }
 
 .input-container input:focus {
-  border-color: #3b82f6; /* blue */
+  border-color: var(--primary-color); /* blue */
 }
 
 .input-container label {
@@ -61,6 +61,6 @@ export default {
 .input-container input[value]:not([value=""]) + label {
   top: -0.5rem;
   font-size: 0.75rem;
-  color: #3b82f6;
+  color: var(--primary-color);
 }
 </style>

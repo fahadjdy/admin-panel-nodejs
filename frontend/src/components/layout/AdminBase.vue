@@ -4,7 +4,7 @@
     <!-- Overlay for mobile -->
     <div
       v-if="!isDesktop"
-      class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 z-40"
+      class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 z-40"
       :class="{ 'opacity-0 pointer-events-none': !isSidebarOpen, 'opacity-100': isSidebarOpen }"
       @click="closeSidebar"
     ></div>

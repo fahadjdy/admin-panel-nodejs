@@ -1,50 +1,42 @@
 <template>
   <aside
-    class="fixed z-50 top-0 left-0 w-64 h-full bg-gray-800 text-white transform transition-transform duration-300 flex flex-col shadow-xl"
-    :class="{ '-translate-x-full': !isOpen, 'translate-x-0': isOpen }"
+    class="admin-sidebar"
+    :class="{ 'sidebar-closed': !isOpen, 'sidebar-open': isOpen }"
   >
     <!-- Logo / Title -->
-    <div class="p-6 text-2xl font-bold flex items-center justify-between border-b border-white/10">
+    <div class="sidebar-header">
       <span>Fahad Jadiya</span>
-      <button v-if="showClose" @click="$emit('close')" class="text-white md:hidden">
-        ✕
-      </button>
+      <button v-if="showClose" @click="$emit('close')" class="close-btn md:hidden">✕</button>
     </div>
 
     <!-- Navigation -->
-    <nav class="flex-1 px-4 py-4 space-y-2">
-
-      <router-link to="/admin/dashboard"
-        class="block py-2 px-3 flex items-center gap-2 rounded hover:bg-gray-700 transition-colors">
+    <nav class="sidebar-nav">
+      <router-link to="/admin/dashboard" class="nav-item">
         <i class="fas fa-home"></i> Dashboard
       </router-link>
 
-      <router-link to="/admin/users"
-        class="block py-2 px-3 flex items-center gap-2 rounded hover:bg-gray-700 transition-colors">
+      <router-link to="/admin/users" class="nav-item">
         <i class="fas fa-users"></i> Users
       </router-link>
 
-      <router-link to="/admin/profile"
-        class="block py-2 px-3 flex items-center gap-2 rounded hover:bg-gray-700 transition-colors">
+      <router-link to="/admin/profile" class="nav-item">
         <i class="fas fa-cog"></i> Profile
       </router-link>
 
       <!-- Example submenu -->
       <div>
-        <button @click="submenuOpen = !submenuOpen"
-          class="w-full text-left py-2 px-3 rounded hover:bg-gray-700 flex items-center justify-between gap-2 transition-colors">
+        <button @click="submenuOpen = !submenuOpen" class="nav-item submenu-toggle">
           <div class="flex items-center gap-2">
             <i class="fas fa-layer-group"></i> Menu
           </div>
-          <i class="fas fa-chevron-down transition-transform" :class="{ 'rotate-180': submenuOpen }"></i>
+          <i class="fas fa-chevron-down" :class="{ 'rotate-180': submenuOpen }"></i>
         </button>
 
-        <div v-show="submenuOpen" class="ml-6 mt-1 space-y-1 border-l border-gray-600 pl-2">
-          <router-link to="#" class="block py-1 px-2 rounded hover:bg-gray-700 text-sm">Submenu 1</router-link>
-          <router-link to="#" class="block py-1 px-2 rounded hover:bg-gray-700 text-sm">Submenu 2</router-link>
+        <div v-show="submenuOpen" class="submenu">
+          <router-link to="#" class="submenu-item">Submenu 1</router-link>
+          <router-link to="#" class="submenu-item">Submenu 2</router-link>
         </div>
       </div>
-
     </nav>
   </aside>
 </template>
@@ -61,3 +53,105 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 16rem; /* 64 */
+  height: 100%;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+  z-index: 50;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.sidebar-closed {
+  transform: translateX(-100%);
+}
+
+.sidebar-open {
+  transform: translateX(0);
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--white-color);
+  cursor: pointer;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  color: var(--white-color);
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.nav-item:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.submenu-toggle {
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.submenu {
+  margin-left: 1.5rem;
+  margin-top: 0.25rem;
+  border-left: 1px solid rgba(255,255,255,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-left: 0.5rem;
+}
+
+.submenu-item {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  color: var(--white-color);
+  border-radius: 0.25rem;
+  transition: background 0.2s;
+}
+
+.submenu-item:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+  transition: transform 0.2s;
+}
+</style>

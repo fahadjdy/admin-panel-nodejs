@@ -1,11 +1,6 @@
 <template>
   <button
-    :class="[
-      'rounded-lg px-4 py-2 font-medium transition',
-      sizeClasses,
-      variantClasses,
-      { 'opacity-50 cursor-not-allowed': disabled }
-    ]"
+    :class="['ui-button', variant, size]"
     :disabled="disabled"
     @click="$emit('click', $event)"
   >
@@ -19,7 +14,7 @@ export default {
   props: {
     variant: {
       type: String,
-      default: "primary", // primary, secondary, danger
+      default: "primary", // primary, secondary, danger, success
     },
     size: {
       type: String,
@@ -30,29 +25,73 @@ export default {
       default: false,
     },
   },
-  computed: {
-    variantClasses() {
-        switch (this.variant) {
-            case "secondary":
-            return "bg-gradient-to-r from-gray-200 to-gray-300 text-gray-800 hover:from-gray-300 hover:to-gray-400 shadow-sm";
-            case "danger":
-            return "bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 shadow-md";
-            case "success":
-            return "bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-md";
-            default: // primary
-            return "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-md";
-        }
-    },
-    sizeClasses() {
-      switch (this.size) {
-        case "sm":
-          return "text-sm px-3 py-1";
-        case "lg":
-          return "text-lg px-6 py-3";
-        default:
-          return "text-base px-4 py-2"; // md
-      }
-    },
-  },
 };
 </script>
+
+<style scoped>
+.ui-button {
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+/* Variants using CSS variables */
+.ui-button.primary {
+  background: var(--primary-color);
+  color: var(--white-color);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.ui-button.primary:hover:not(:disabled) {
+  background: var(--primary-hover-color);
+}
+
+.ui-button.secondary {
+  background: var(--secondary-color);
+  color: var(--secondary-text-color);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.ui-button.secondary:hover:not(:disabled) {
+  background: var(--secondary-hover-color);
+}
+
+.ui-button.danger {
+  background: var(--danger-color);
+  color: var(--white-color);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.ui-button.danger:hover:not(:disabled) {
+  background: var(--danger-hover-color);
+}
+
+.ui-button.success {
+  background: var(--success-color);
+  color: var(--white-color);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.ui-button.success:hover:not(:disabled) {
+  background: var(--success-hover-color);
+}
+
+/* Sizes */
+.ui-button.sm {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.75rem;
+}
+.ui-button.md {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+.ui-button.lg {
+  font-size: 1.125rem;
+  padding: 0.75rem 1.5rem;
+}
+
+/* Disabled */
+.ui-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+</style>
