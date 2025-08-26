@@ -28,6 +28,14 @@ class ProductController {
     }
   }
 
+  static async findById(id) {
+    const product = await ProductModel.getById(id);
+    if (!product) return null;
+    product.images = await ProductImageModel.getByProductId(id);
+    return product;
+  }
+
+
   static async getById(req, res) {
     try {
       const product = await ProductModel.getById(req.params.id);
@@ -54,14 +62,18 @@ class ProductController {
       const productId = await ProductModel.addProduct({ name, slug, description, category_id, status });
 
       // Save product images
-      req.files?.forEach(async (file) => {
-        await ProductImageModel.addProductImage({
-          product_id: productId,
-          image: `/uploads/products/${file.filename}`
-        });
-      });
+      await Promise.all(
+        req.files.map(file =>
+          ProductImageModel.addProductImage({
+            product_id: productId,
+            image: `/uploads/products/${category_id}/${file.filename}`
+          })
+        )
+      );
 
-      res.json({ success: true, message: "Product added successfully", productId });
+      const product = await ProductController.findById(productId);
+
+      res.json({ success: true, message: "Product added successfully", product });
     } catch (err) {
       res.status(500).json({ success: false, error: err.message });
     }
@@ -79,7 +91,7 @@ class ProductController {
 
       const addedImages = [];
       for (const file of req.files) {
-        const imagePath = `/uploads/products/${file.filename}`;
+        const imagePath = `/uploads/products/${category_id}/${file.filename}`;
         const imageId = await ProductImageModel.addProductImage({ product_id, image: imagePath });
         addedImages.push({ id: imageId, image: imagePath });
       }

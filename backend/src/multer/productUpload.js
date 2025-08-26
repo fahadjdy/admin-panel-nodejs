@@ -8,7 +8,8 @@ if (!fs.existsSync(uploadPath)) fs.mkdirSync(uploadPath);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const folder = "uploads/products";
+    const categoryId = req.body.category_id;
+    const folder = `uploads/products/${categoryId}`;
     ensureFolderExists(folder);
     cb(null, folder);
   },
