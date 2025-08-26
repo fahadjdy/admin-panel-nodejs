@@ -52,7 +52,6 @@ export default {
   mounted() {
     this.checkScreen();
     window.addEventListener('resize', this.checkScreen);
-
     if (!localStorage.getItem('token')) {
       this.$router.push('/login');
     }
