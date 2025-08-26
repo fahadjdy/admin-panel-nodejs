@@ -7,8 +7,9 @@ export const adminRoutes = [
     path: "/admin",
     component: AdminBase,
     children: [
+      { path: "", redirect: "dashboard" }, 
       { path: "dashboard", name: "Dashboard", component: Dashboard },
       { path: "profile", name: "Profile", component: Profile },
     ],
-  },
+  }
 ];

@@ -30,7 +30,7 @@
 
       <!-- Page content -->
       <main class="flex-1 p-6">
-        <slot></slot>
+        <router-view></router-view>
       </main>
     </div>
 
