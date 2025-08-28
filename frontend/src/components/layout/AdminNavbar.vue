@@ -149,4 +149,6 @@ export default {
   color: var(--danger-color);
   margin-right: 0.5rem;
 }
+
+
 </style>

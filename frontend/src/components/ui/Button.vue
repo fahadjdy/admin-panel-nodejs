@@ -4,6 +4,7 @@
     :disabled="disabled"
     @click="$emit('click', $event)"
   >
+    <i v-if="icon" :class="icon" class="mr-2"></i>
     <slot />
   </button>
 </template>
@@ -16,6 +17,10 @@ export default {
       type: String,
       default: "primary", // primary, secondary, danger, success
     },
+    icon : {
+      type: String,
+      default: "",
+    },
     size: {
       type: String,
       default: "md", // sm, md, lg
@@ -24,6 +29,7 @@ export default {
       type: Boolean,
       default: false,
     },
+
   },
 };
 </script>

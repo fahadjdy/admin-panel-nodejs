@@ -11,17 +11,31 @@
 
     <!-- Navigation -->
     <nav class="sidebar-nav">
-      <router-link to="/admin/dashboard" class="nav-item">
+     <router-link 
+        to="/admin/dashboard" 
+        class="nav-item" 
+        active-class="active"
+        exact-active-class="active"
+      >
         <i class="fas fa-home"></i> Dashboard
       </router-link>
 
-      <router-link to="/admin/users" class="nav-item">
+      <router-link 
+        to="/admin/users" 
+        class="nav-item" 
+        active-class="active"
+      >
         <i class="fas fa-users"></i> Users
       </router-link>
 
-      <router-link to="/admin/profile" class="nav-item">
+      <router-link 
+        to="/admin/profile" 
+        class="nav-item" 
+        active-class="active"
+      >
         <i class="fas fa-cog"></i> Profile
       </router-link>
+
 
       <!-- Example submenu -->
       <div>
@@ -49,7 +63,9 @@ export default {
     showClose: { type: Boolean, default: false },
   },
   data() {
-    return { submenuOpen: false };
+    return { 
+      submenuOpen: false 
+    };
   },
 };
 </script>
@@ -154,4 +170,12 @@ export default {
   transform: rotate(180deg);
   transition: transform 0.2s;
 }
+
+.nav-item.active{
+  background-color: var(--primary-hover-color);
+  color: #fff;
+  font-weight: bold;
+  border-radius: 0.5rem;
+}
+
 </style>

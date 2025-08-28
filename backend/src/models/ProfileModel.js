@@ -13,6 +13,7 @@ class ProfileModel {
 
   // Update profile
   static async update(id, data) {
+
     const fields = [
       "owner_name",
       "email",
@@ -21,7 +22,7 @@ class ProfileModel {
       "slogan",
       "logo",
       "favicon",
-      "is_maintenance"
+      "is_maintainance"
     ];
 
     const updates = [];

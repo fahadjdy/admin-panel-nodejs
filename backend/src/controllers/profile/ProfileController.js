@@ -31,6 +31,8 @@ class ProfileController {
       is_maintainance
     } = req.body;
 
+   
+
     const logo = req.files?.logo ? req.files.logo[0].filename : null;
     const favicon = req.files?.favicon ? req.files.favicon[0].filename : null;
 
@@ -61,7 +63,7 @@ class ProfileController {
           /* ignore missing file */
         }
       }
-
+      
       // Update profile
        await ProfileModel.update(currentProfile.id, {
         owner_name,
@@ -69,7 +71,7 @@ class ProfileController {
         company_name,
         about_company,
         slogan,
-        is_maintainance,
+        is_maintainance: is_maintainance == "true" ? 1 : 0,
         logo: logo || currentProfile.logo,
         favicon: favicon || currentProfile.favicon
       });
