@@ -43,6 +43,54 @@ export const login = async (req, res) => {
   }
 };
 
+
+export const register = async (req, res) => {
+  const { name, email, password } = req.body;
+
+  try {
+    // 1️⃣ Basic validation
+    if (!name || !email || !password) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
+    }
+
+    // 2️⃣ Check if user already exists
+    const [existing] = await pool.query("SELECT id FROM users WHERE email = ? AND is_deleted = 0", [email]);
+    if (existing.length > 0) {
+      return res.status(400).json({ success: false, message: "Email already registered" });
+    }
+
+    // 3️⃣ Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // 4️⃣ Insert user into DB
+    const [result] = await pool.query(
+      "INSERT INTO users (name, email, password, status, created_at) VALUES (?, ?, ?, 'Active', NOW())",
+      [name, email, hashedPassword]
+    );
+
+    const userId = result.insertId;
+
+    // 5️⃣ Generate JWT token
+    const token = jwt.sign(
+      { id: userId, name, email },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRATION }
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "User registered successfully",
+      token,
+      user: { id: userId, name, email }
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+
 // Logout user
 export const logout = async (req, res) => {
   try {
