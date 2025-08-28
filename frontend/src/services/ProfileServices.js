@@ -28,6 +28,20 @@ class ProfileServices {
       throw error;
     }
   }
+
+  static async getProfile() {
+    try {
+      const response = await axios.get(`${API_URL}/profile`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Profile fetch failed:", error);
+      throw error;
+    }
+  }
 }
 
 export default ProfileServices;
