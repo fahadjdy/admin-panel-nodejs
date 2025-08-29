@@ -8,7 +8,6 @@ class ProfileController {
     try {
       const userId = req.user.id; 
       const profile = await ProfileModel.findByUserId(userId);
-
       if (!profile) {
         return res.status(404).json({ error: "Profile not found" });
       }
