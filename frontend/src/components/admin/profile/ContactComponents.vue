@@ -99,7 +99,7 @@ export default {
             try {
                 await ContactServices.delete(id);
 
-                this.profile.contacts = this.getContacts();
+                await this.getContacts();
                 this.successMessage = 'Contact deleted successfully';
                 this.isSuccess = true;
             } catch (error) {
@@ -125,11 +125,10 @@ export default {
                 
                 this.closeAlert();
                 await ContactServices.add(this.mobile);
-                this.mobile = '';
-                await this.getContacts();
+                this.profile.contacts.push( {mobile : this.mobile });
                 this.successMessage = 'Contact added successfully';
                 this.isSuccess = true;
-                this.newContact = '';
+                this.mobile = '';
             } catch (error) {
                 
                 if (error.response && error.response.data && error.response.data.error) {

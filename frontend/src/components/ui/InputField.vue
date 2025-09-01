@@ -4,6 +4,7 @@
       :type="type"
       :id="id"
       :value="modelValue"
+      :placeholder="placeholder"
       @input="$emit('update:modelValue', $event.target.value)"
       required
     />
@@ -17,6 +18,7 @@ export default {
   props: {
     modelValue: String,
     type: { type: String, default: "text" },
+    placeholder: { type: String, default: "" },
     label: { type: String, required: true },
     id: { type: String, required: true },
   },
