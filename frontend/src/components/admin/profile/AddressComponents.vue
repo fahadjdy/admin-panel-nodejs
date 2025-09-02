@@ -1,19 +1,50 @@
 <template>
   <div class="space-y-4 mt-5">
 
-    <!-- Add Address Form -->
+    <!-- Button to open Add Address Modal -->
+    <UiButton
+      @clickBtn="showModal = true"
+      icon="fas fa-plus"
+      variant="primary"
+      class="mb-4"
+    >
+      Add New Address
+    </UiButton>
+
+    <!-- Modal -->
+    <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-200 bg-opacity-1 z-1">
+      <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
+        <!-- Close button -->
+        <button @click="showModal = false" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800">
+          &times;
+        </button>
+
+        <h2 class="text-xl font-semibold mb-4">Add Address</h2>
+
+        <!-- Form inside modal -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InputField v-model="newAddress.address" placeholder="Address" />
+          <InputField v-model="newAddress.city" placeholder="City" />
+          <InputField v-model="newAddress.state" placeholder="State" />
+          <InputField v-model="newAddress.pincode" placeholder="Pincode" />
+        </div>
+
+        <div class="mt-4">
+          <UiButton
+            @clickBtn="addAddress"
+            icon="fas fa-check"
+            variant="primary"
+            class="w-full text-lg rounded-lg px-0"
+          >
+            Save Address
+          </UiButton>
+        </div>
+      </div>
+    </div>
+
+    <!-- Address Table -->
     <fieldset class="border border-gray-300 rounded-md p-4">
       <legend class="text-lg px-2">Address List</legend>
-
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-2 items-stretch mb-4">
-        <InputField v-model="newAddress.address" placeholder="Address" />
-        <InputField v-model="newAddress.city" placeholder="City" />
-        <InputField v-model="newAddress.state" placeholder="State" />
-        <InputField v-model="newAddress.pincode" placeholder="Pincode" />
-        <UiButton type="button" @clickBtn="addAddress" variant="primary">Add</UiButton>
-      </div>
-
-      <!-- Address Table -->
       <div class="overflow-x-auto">
         <table class="w-full border border-gray-300 rounded-md shadow-sm">
           <thead class="bg-blue-50 border-b border-gray-200">
@@ -45,7 +76,6 @@
     <!-- Alerts -->
     <alertBox v-if="isSuccess" :message="successMessage" type="success" @close="closeAlert" />
     <alertBox v-if="isError" :message="errorMessage" type="error" @close="closeAlert" />
-
   </div>
 </template>
 
@@ -60,7 +90,8 @@ export default {
   data() {
     return {
       addresses: [],
-      newAddress: { address: 'b', city: 'b', state: 'b', pincode: '1' },
+      newAddress: { address: '', city: '', state: '', pincode: '' },
+      showModal: false,
       successMessage: '',
       errorMessage: '',
       isSuccess: false,
@@ -74,40 +105,38 @@ export default {
     async getAddresses() {
       try {
         const data = await AddressServices.getAll();
-        this.addresses = data.addresses || data; // adjust if API wraps response
+        this.addresses = data.addresses || data;
       } catch (error) {
         this.errorMessage = 'Failed to load addresses';
         this.isError = true;
       }
     },
 
-   async addAddress(e) {
-    console.log(e);
-        try {
-            this.closeAlert();
-            const { address, city, state, pincode } = this.newAddress;
-            if (!address || !city || !state || !pincode) {
-            this.errorMessage = 'All fields are required';
-            this.isError = true;
-            return;
-            }
-
-            const response = await AddressServices.add(this.newAddress);
-
-            await this.getAddresses();
-            this.newAddress = { address: '', city: '', state: '', pincode: '' };
-            this.successMessage = 'Address added successfully';
-            this.isSuccess = true;
-        } catch (error) {
-            this.errorMessage = 'Failed to add address';
-            this.isError = true;
+    async addAddress() {
+      try {
+        this.closeAlert();
+        const { address, city, state, pincode } = this.newAddress;
+        if (!address || !city || !state || !pincode) {
+          this.errorMessage = 'All fields are required';
+          this.isError = true;
+          return;
         }
+
+        await AddressServices.add(this.newAddress);
+        await this.getAddresses();
+        this.newAddress = { address: '', city: '', state: '', pincode: '' };
+        this.successMessage = 'Address added successfully';
+        this.isSuccess = true;
+        this.showModal = false; // close modal after adding
+      } catch (error) {
+        this.errorMessage = 'Failed to add address';
+        this.isError = true;
+      }
     },
 
     async removeAddress(id, index) {
       try {
         await AddressServices.delete(id);
-
         await this.getAddresses();
         this.successMessage = 'Address deleted successfully';
         this.isSuccess = true;

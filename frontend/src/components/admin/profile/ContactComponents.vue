@@ -9,8 +9,7 @@
                 <form @submit.prevent="addContact" class="flex flex-1">
                     <!-- 80% Input -->
                     <div class="flex-[0.8]">
-                        <InputField type="text" v-model="mobile" name="mobile" label="Contact Number"
-                            placeholder="Enter mobile number" class="h-full" />
+                        <InputField type="text" v-model="mobile" name="mobile" label="Contact Number"  class="h-full" />
                     </div>
 
                     <!-- 20% Button -->
