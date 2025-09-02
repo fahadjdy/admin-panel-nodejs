@@ -1,15 +1,7 @@
 <template>
   <div class="space-y-4 mt-5">
 
-    <!-- Button to open Add Address Modal -->
-    <UiButton
-      @clickBtn="showModal = true"
-      icon="fas fa-plus"
-      variant="primary"
-      class="mb-4"
-    >
-      Add New Address
-    </UiButton>
+   
 
     <!-- Modal -->
     <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-200 bg-opacity-1 z-1">
@@ -46,6 +38,15 @@
     <fieldset class="border border-gray-300 rounded-md p-4">
       <legend class="text-lg px-2">Address List</legend>
       <div class="overflow-x-auto">
+         <!-- Button to open Add Address Modal -->
+    <UiButton
+      @clickBtn="showModal = true"
+      icon="fas fa-plus"
+      variant="primary"
+      class="mb-4"
+    >
+      New Address
+    </UiButton>
         <table class="w-full border border-gray-300 rounded-md shadow-sm">
           <thead class="bg-blue-50 border-b border-gray-200">
             <tr>
