@@ -18,5 +18,10 @@ import AddressComponents from "../../components/admin/profile/AddressComponents.
 export default {
   name: "Profile",
   components: { ProfileDetailComponents ,ContactComponents , AddressComponents },
+  data() {
+    return {
+      profile: {},
+    };
+  },
 };
 </script>

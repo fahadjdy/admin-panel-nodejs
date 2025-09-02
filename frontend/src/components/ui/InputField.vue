@@ -19,8 +19,8 @@ export default {
     modelValue: String,
     type: { type: String, default: "text" },
     placeholder: { type: String, default: "" },
-    label: { type: String, required: true },
-    id: { type: String, required: true },
+    label: { type: String},
+    id: { type: String},
   },
 };
 </script>

@@ -48,7 +48,7 @@
                             <!-- Delete button -->
                             <td class="px-4 py-2 flex justify-center gap-2">
                                 <UiButton type="button" icon="fas fa-trash" variant="danger"
-                                    class="h-10 w-10 p-0 rounded-full" @click="removeContact(contact.id, index)">
+                                    class="h-10 w-10 p-0 rounded-full" @clickBtn="removeContact(contact.id, index)">
                                 </UiButton>
                             </td>
                         </tr>

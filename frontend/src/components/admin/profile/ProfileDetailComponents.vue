@@ -62,7 +62,7 @@
 
     <!-- Update Button -->
     <div class="text-end mt-4">
-      <UiButton type="submit" icon="fas fa-save" variant="primary" class="text-lg rounded-lg" @click="updateProfile">
+      <UiButton type="submit" icon="fas fa-save" variant="primary" class="text-lg rounded-lg">
         Update
       </UiButton>
     </div>
@@ -114,6 +114,7 @@ export default {
         const response = await ProfileServices.getProfile();
         const image_url = import.meta.env.VITE_API_IMAGE_URL;
         if (response) this.profile = response;
+        this.profile.is_maintainance  = ( this.profile.is_maintainance === 1 ) ? true : false ;
         if (this.profile.logo) this.logoPreview = image_url + "/profile/" + this.profile.logo;
         if (this.profile.favicon) this.faviconPreview = image_url + "/profile/" + this.profile.favicon;
       } catch (err) {
@@ -133,6 +134,7 @@ export default {
       }
     },
     async updateProfile() {
+      
       try {
         const response = await ProfileServices.updateProfile(this.profile);
         if (response.success) {

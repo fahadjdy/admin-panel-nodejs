@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-4">
+  <div class="space-y-4 mt-5">
 
     <!-- Add Address Form -->
     <fieldset class="border border-gray-300 rounded-md p-4">
@@ -10,7 +10,7 @@
         <InputField v-model="newAddress.city" placeholder="City" />
         <InputField v-model="newAddress.state" placeholder="State" />
         <InputField v-model="newAddress.pincode" placeholder="Pincode" />
-        <UiButton type="button" @click="addAddress" variant="primary">Add</UiButton>
+        <UiButton type="button" @clickBtn="addAddress" variant="primary">Add</UiButton>
       </div>
 
       <!-- Address Table -->
@@ -34,7 +34,7 @@
               <td class="px-4 py-2">{{ address.state }}</td>
               <td class="px-4 py-2">{{ address.pincode }}</td>
               <td class="px-4 py-2 flex justify-center gap-2">
-                <UiButton icon="fas fa-trash" variant="danger" @click="removeAddress(address.id, index)" />
+                <UiButton icon="fas fa-trash" variant="danger" @clickBtn="removeAddress(address.id, index)" />
               </td>
             </tr>
           </tbody>
@@ -81,7 +81,8 @@ export default {
       }
     },
 
-   async addAddress() {
+   async addAddress(e) {
+    console.log(e);
         try {
             this.closeAlert();
             const { address, city, state, pincode } = this.newAddress;
@@ -93,8 +94,7 @@ export default {
 
             const response = await AddressServices.add(this.newAddress);
 
-            this.addresses.push(response.address || this.newAddress);
-
+            await this.getAddresses();
             this.newAddress = { address: '', city: '', state: '', pincode: '' };
             this.successMessage = 'Address added successfully';
             this.isSuccess = true;

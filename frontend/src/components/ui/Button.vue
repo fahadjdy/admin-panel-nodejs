@@ -2,7 +2,7 @@
   <button
     :class="['ui-button', variant, size]"
     :disabled="disabled"
-    @click="$emit('click', $event)"
+    @click="$emit('clickBtn', $event)"
   >
     <i v-if="icon" :class="icon" class="mr-2"></i>
     <slot />
