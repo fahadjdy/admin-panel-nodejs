@@ -1,44 +1,6 @@
 <template>
   <div class="space-y-4 mt-5">
-
-   
-
-    <!-- Modal -->
-    <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-200 bg-opacity-1 z-1">
-      <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
-        <!-- Close button -->
-        <button @click="showModal = false" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800">
-          &times;
-        </button>
-
-        <h2 class="text-xl font-semibold mb-4">Add Address</h2>
-
-        <!-- Form inside modal -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <InputField v-model="newAddress.address" placeholder="Address" />
-          <InputField v-model="newAddress.city" placeholder="City" />
-          <InputField v-model="newAddress.state" placeholder="State" />
-          <InputField v-model="newAddress.pincode" placeholder="Pincode" />
-        </div>
-
-        <div class="mt-4">
-          <UiButton
-            @clickBtn="addAddress"
-            icon="fas fa-check"
-            variant="primary"
-            class="w-full text-lg rounded-lg px-0"
-          >
-            Save Address
-          </UiButton>
-        </div>
-      </div>
-    </div>
-
-    <!-- Address Table -->
-    <fieldset class="border border-gray-300 rounded-md p-4">
-      <legend class="text-lg px-2">Address List</legend>
-      <div class="overflow-x-auto">
-         <!-- Button to open Add Address Modal -->
+    <!-- Button to open Add Address Modal -->
     <UiButton
       @clickBtn="showModal = true"
       icon="fas fa-plus"
@@ -47,6 +9,32 @@
     >
       New Address
     </UiButton>
+
+    <!-- Modal -->
+    <Modal v-model:show="showModal" title="Add Address">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <InputField v-model="newAddress.address" placeholder="Address" />
+        <InputField v-model="newAddress.city" placeholder="City" />
+        <InputField v-model="newAddress.state" placeholder="State" />
+        <InputField v-model="newAddress.pincode" placeholder="Pincode" />
+      </div>
+
+      <div class="mt-4">
+        <UiButton
+          @clickBtn="addAddress"
+          icon="fas fa-check"
+          variant="primary"
+          class="w-full text-lg rounded-lg px-0"
+        >
+          Save Address
+        </UiButton>
+      </div>
+    </Modal>
+
+    <!-- Address Table -->
+    <fieldset class="border border-gray-300 rounded-md p-4">
+      <legend class="text-lg px-2">Address List</legend>
+      <div class="overflow-x-auto">
         <table class="w-full border border-gray-300 rounded-md shadow-sm">
           <thead class="bg-blue-50 border-b border-gray-200">
             <tr>
@@ -59,14 +47,22 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(address, index) in addresses" :key="address.id" class="hover:bg-blue-50 transition-colors">
+            <tr
+              v-for="(address, index) in addresses"
+              :key="address.id"
+              class="hover:bg-blue-50 transition-colors"
+            >
               <td class="px-4 py-2">{{ index + 1 }}</td>
               <td class="px-4 py-2">{{ address.address }}</td>
               <td class="px-4 py-2">{{ address.city }}</td>
               <td class="px-4 py-2">{{ address.state }}</td>
               <td class="px-4 py-2">{{ address.pincode }}</td>
               <td class="px-4 py-2 flex justify-center gap-2">
-                <UiButton icon="fas fa-trash" variant="danger" @clickBtn="removeAddress(address.id, index)" />
+                <UiButton
+                  icon="fas fa-trash"
+                  variant="danger"
+                  @clickBtn="removeAddress(address.id, index)"
+                />
               </td>
             </tr>
           </tbody>
@@ -75,8 +71,18 @@
     </fieldset>
 
     <!-- Alerts -->
-    <alertBox v-if="isSuccess" :message="successMessage" type="success" @close="closeAlert" />
-    <alertBox v-if="isError" :message="errorMessage" type="error" @close="closeAlert" />
+    <alertBox
+      v-if="isSuccess"
+      :message="successMessage"
+      type="success"
+      @close="closeAlert"
+    />
+    <alertBox
+      v-if="isError"
+      :message="errorMessage"
+      type="error"
+      @close="closeAlert"
+    />
   </div>
 </template>
 
@@ -84,10 +90,11 @@
 import UiButton from '../../ui/Button.vue';
 import InputField from '../../ui/InputField.vue';
 import alertBox from '../../ui/alertBox.vue';
+import Modal from '../../ui/Modal.vue';
 import AddressServices from '../../../services/AddressServices.js';
 
 export default {
-  components: { UiButton, InputField, alertBox },
+  components: { UiButton, InputField, alertBox, Modal },
   data() {
     return {
       addresses: [],
@@ -128,7 +135,7 @@ export default {
         this.newAddress = { address: '', city: '', state: '', pincode: '' };
         this.successMessage = 'Address added successfully';
         this.isSuccess = true;
-        this.showModal = false; // close modal after adding
+        this.showModal = false; // close modal
       } catch (error) {
         this.errorMessage = 'Failed to add address';
         this.isError = true;

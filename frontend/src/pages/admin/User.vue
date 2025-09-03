@@ -1,4 +1,5 @@
 <template>
+  
   <div class="space-y-6">
 
     <!-- Add User Button -->
@@ -9,7 +10,7 @@
     </div>
 
     <!-- User Modal -->
-    <Modal v-model:show="showModal" title="User Detail" class="w-1/2 mx-auto">
+    <Modal v-model:show="showModal" title="User Detail" class="mx-auto">
       <form @submit.prevent="saveUser" class="space-y-4">
         <div class="space-y-4">
           <InputField v-model="user.name" id="name" label="Name" type="text" placeholder="Enter User Name" />

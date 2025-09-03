@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div v-if="show" class="fixed inset-0 z-50 flex items-center justify-center ">
+    <div v-if="show" class="fixed inset-0 z-50 flex items-center justify-center modal">
       <div class="bg-white rounded-lg shadow-lg w-full max-w-xl relative">
         <!-- Header -->
         <div class="flex justify-between items-center border-b p-4">
@@ -41,5 +41,14 @@ export default {
 }
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
+}
+.modal:before {
+    content: '';
+    background: #000;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    opacity: 0.5;
 }
 </style>
