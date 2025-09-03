@@ -124,7 +124,7 @@ export default {
                 
                 this.closeAlert();
                 await ContactServices.add(this.mobile);
-                this.profile.contacts.push( {mobile : this.mobile });
+                await this.getContacts();
                 this.successMessage = 'Contact added successfully';
                 this.isSuccess = true;
                 this.mobile = '';
