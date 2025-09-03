@@ -7,8 +7,10 @@ class CategoryController {
   // Get all categories
   static async getCategories(req, res) {
     try {
-      const categories = await CategoryModel.getAll();
-      res.json({ success: true, data: categories });
+      const limit = parseInt(req.query.limit) || 10;
+      const offset = parseInt(req.query.offset) || 0;
+      const categories = await CategoryModel.getAll(limit, offset);
+      res.json({ success: true, data: categories , total : await CategoryModel.getTotalCount()});
     } catch (err) {
       res.status(500).json({ success: false, error: err.message });
     }

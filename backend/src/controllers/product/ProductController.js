@@ -18,11 +18,15 @@ function deleteFiles(paths = []) {
 class ProductController {
   static async getAll(req, res) {
     try {
-      const products = await ProductModel.getAll();
+      // limit and offset
+      const limit = parseInt(req.query.limit) || 10;
+      const offset = parseInt(req.query.offset) || 0;
+
+      const products = await ProductModel.getAll(limit, offset);
       const productsWithImages = await Promise.all(
         products.map(async (p) => ({ ...p, images: await ProductImageModel.getByProductId(p.id) }))
       );
-      res.json({ success: true, data: productsWithImages });
+      res.json({ success: true, data: productsWithImages ,total : await ProductModel.getTotalCount()});
     } catch (err) {
       res.status(500).json({ success: false, error: err.message });
     }

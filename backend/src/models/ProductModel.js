@@ -2,13 +2,22 @@ import pool from "../config/db.js";
 
 class ProductModel {
   // Get all products (excluding deleted)
-  static async getAll() {
+  static async getAll(limit, offset) {
     const [rows] = await pool.query(
-      "SELECT * FROM products WHERE is_deleted = 0 ORDER BY id DESC"
+      "SELECT * FROM products WHERE is_deleted = 0 ORDER BY id DESC LIMIT ? OFFSET ?",
+      [limit, offset]
     );
     return rows;
   }
 
+  // total count 
+  static async getTotalCount() {
+    const [rows] = await pool.query(
+      "SELECT COUNT(*) as total FROM products WHERE is_deleted = 0"
+    );
+    return rows[0].total;
+  }
+  
   // Get product by ID
   static async getById(id) {
     const [rows] = await pool.query(

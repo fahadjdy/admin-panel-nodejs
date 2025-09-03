@@ -3,11 +3,19 @@ import pool from "../config/db.js";
 
 class CategoryModel {
   // Get all categories (excluding deleted)
-  static async getAll() {
+  static async getAll(limit, offset) {
     const [rows] = await pool.query(
-      "SELECT * FROM categories WHERE is_deleted = 0 ORDER BY id DESC"
+      "SELECT * FROM categories WHERE is_deleted = 0 ORDER BY id DESC LIMIT ? OFFSET ?",
+      [limit, offset]
     );
     return rows;
+  }
+
+  static async getTotalCount() {
+    const [rows] = await pool.query(
+      "SELECT COUNT(*) as total FROM categories WHERE is_deleted = 0"
+    );
+    return rows[0].total;
   }
 
   // Get category by ID

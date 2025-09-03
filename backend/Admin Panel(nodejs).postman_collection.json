@@ -484,13 +484,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/api/categories",
+							"raw": "{{URL}}/api/categories?limit=10&offset=0",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"api",
 								"categories"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
 							]
 						}
 					},
@@ -655,13 +665,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/api/products",
+							"raw": "{{URL}}/api/products?limit=10&offset=1",
 							"host": [
 								"{{URL}}"
 							],
 							"path": [
 								"api",
 								"products"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -687,7 +707,7 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "First products",
+									"value": "second2",
 									"type": "text"
 								},
 								{
@@ -698,10 +718,7 @@
 								{
 									"key": "images",
 									"type": "file",
-									"src": [
-										"/home/techaxion/Downloads/Bunglow (1).jpg",
-										"/home/techaxion/Downloads/weekend home (1).jpg"
-									]
+									"src": "/home/techaxion/Downloads/profile.jpeg"
 								},
 								{
 									"key": "category_id",
@@ -1509,34 +1526,6 @@
 						"api",
 						"auth",
 						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "register",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\":\"fahadjdy12@gmail.com\",\n    \"name\":\"Fahad Jadiya\",\n    \"password\":\"Fahad786@\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{URL}}/api/auth/register",
-					"host": [
-						"{{URL}}"
-					],
-					"path": [
-						"api",
-						"auth",
-						"register"
 					]
 				}
 			},
