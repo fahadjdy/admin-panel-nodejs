@@ -9,6 +9,11 @@ class UsersModel {
   // remark : string;
   
   static allowedFields = ["name", "email", "password","status","remark"];
+
+  static async getAll(user_id) {
+    const [rows] = await pool.query("SELECT * FROM users where is_deleted = 0 and id != ?", [user_id]);
+    return rows;
+  }
   
   static async create({ name, email, password }) {
 

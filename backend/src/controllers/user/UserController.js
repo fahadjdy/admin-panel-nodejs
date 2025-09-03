@@ -3,6 +3,20 @@ import ProfileModel from "../../models/ProfileModel.js";
 import bcrypt from "bcrypt";
 
 class UsersController {
+
+  // get all users 
+  static async getAll(req, res) {
+    try {
+      // get user id for requested user
+      const user_id = req.user.id;
+
+      const users = await UsersModel.getAll(user_id);
+      res.json(users);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+
   // Create (Register User)
   static async create(req, res) {
     const { name, email, password } = req.body;

@@ -4,7 +4,7 @@
       :id="id"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
-      required
+      :required="required"
       rows="4"
     ></textarea>
     <label :for="id">{{ label }}</label>
@@ -18,6 +18,7 @@ export default {
     modelValue: String,
     label: { type: String, required: true },
     id: { type: String, required: true },
+    required: { type: Boolean, default: false },
   },
 };
 </script>

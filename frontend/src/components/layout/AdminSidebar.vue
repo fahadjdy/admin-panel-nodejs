@@ -21,11 +21,51 @@
       </router-link>
 
       <router-link 
-        to="/admin/users" 
+        to="/admin/user" 
         class="nav-item" 
         active-class="active"
       >
-        <i class="fas fa-users"></i> Users
+        <i class="fas fa-users"></i> User
+      </router-link>
+
+      <router-link 
+        to="/admin/category" 
+        class="nav-item" 
+        active-class="active"
+      >
+        <i class="fas fa-layer-group"></i> Category
+      </router-link>
+
+      <router-link 
+        to="/admin/product" 
+        class="nav-item" 
+        active-class="active"
+      >
+        <i class="fas fa-shopping-bag"></i> Product
+      </router-link>
+
+      <router-link 
+        to="/admin/testimonial" 
+        class="nav-item" 
+        active-class="active"
+      >
+        <i class="fas fa-comment"></i> Testimonial
+      </router-link>
+
+      <router-link 
+        to="/admin/gallery" 
+        class="nav-item" 
+        active-class="active"
+      >
+        <i class="fas fa-image"></i> Gallery
+      </router-link>
+
+      <router-link 
+        to="/admin/client" 
+        class="nav-item" 
+        active-class="active"
+      >
+        <i class="fas fa-handshake"></i> Client
       </router-link>
 
       <router-link 
@@ -33,7 +73,7 @@
         class="nav-item" 
         active-class="active"
       >
-        <i class="fas fa-cog"></i> Profile
+        <i class="fas fa-id-badge"></i> Profile
       </router-link>
 
 
