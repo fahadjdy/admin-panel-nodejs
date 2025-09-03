@@ -32,7 +32,7 @@ class TestimonialController {
     try {
       const { name, designation, message, status, display_order } = req.body;
 
-      let image = req.file ? `/uploads/testimonials/${req.file.filename}` : null;
+      let image = req.file ? `/testimonials/${req.file.filename}` : null;
 
       const newId = await TestimonialModel.add({
         name,
@@ -72,7 +72,7 @@ class TestimonialController {
             fs.unlinkSync(existingImagePath);
           }
         }
-        image = `/uploads/testimonials/${req.file.filename}`;
+        image = `/testimonials/${req.file.filename}`;
       }
 
       await TestimonialModel.update(id, {
