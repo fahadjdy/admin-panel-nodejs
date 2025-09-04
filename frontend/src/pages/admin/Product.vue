@@ -110,7 +110,7 @@ export default {
                 id: p.id,
                 name: p.name,
                 slug: p.slug,
-                category: p.category_id,
+                category_id: p.category_id,
                 status: p.status,
                 created_at: new Date(p.created_at).toLocaleString(),
                 images: p.images
@@ -132,7 +132,7 @@ export default {
           { data: "id" },
           { data: "name" },
           { data: "slug" },
-          { data: "category" },
+          { data: "category_id" },
           { data: "status" },
           { data: "images", orderable: false, searchable: false },
           { data: "created_at" },

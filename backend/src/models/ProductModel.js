@@ -2,12 +2,13 @@ import pool from "../config/db.js";
 
 class ProductModel {
   // Get all products (excluding deleted)
-  static async getAll(searchObj, limit, offset, orderColumn = "id", orderDir = "DESC") {
-    const { search, filter } = searchObj;
+  static async getAll(searchObj, limit, offset , orderColumn = "id", orderDir = "DESC") {
+    const { search, filter ,order} = searchObj;
     let query = "SELECT id, category_id, name, slug, description, status, created_at, updated_at FROM products WHERE is_deleted = 0";
     const params = [];
 
     // Search by name or description
+   
     if (search) {
       query += " AND (name LIKE ? OR description LIKE ?)";
       const searchTerm = `%${search}%`;
@@ -32,6 +33,11 @@ class ProductModel {
         query += " AND name = ?";
         params.push(filter.name);
       }
+    }
+
+    if(order){
+      orderColumn = order.column || "id";
+      orderDir = order.dir || "DESC";
     }
 
     // Ordering and pagination
