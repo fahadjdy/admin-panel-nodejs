@@ -16,28 +16,36 @@ function deleteFiles(paths = []) {
 }
 
 class ProductController {
+  
   static async getAll(req, res) {
     try {
       // Pagination
-      const limit = parseInt(req.query.limit) || 10;
-      const offset = parseInt(req.query.offset) || 0;
+      const draw = parseInt(req.query.draw) || 0;
+      const start = parseInt(req.query.start) || 0;
+      const length = parseInt(req.query.length) || 10;
 
-      // Search and filters from query params
-      const searchQuery = req.query.search || '';
+      // Search
+      const searchValue = req.query.search || ""; // your request sends "search=bs6"
+
+      // Ordering
+      const orderColumnIndex = req.query['order[0][column]'];
+      const orderDir = req.query['order[0][dir]'] || "asc";
+      const orderColumn = req.query[`columns[${orderColumnIndex}][data]`] || "id";
+
+      // Filters
       const filters = {
         category: req.query.category || null,
         status: req.query.status || null,
         slug: req.query.slug || null,
-        name: req.query.name || null
+        name: req.query.name || null,
       };
+      
+      const search = { search: searchValue, filter: filters, order: { column: orderColumn, dir: orderDir } };
 
-      // Prepare search object
-      const search = { search: searchQuery, filter: filters };
+      // Fetch products
+      const products = await ProductModel.getAll(search, length, start);
 
-      // Fetch products from model
-      const products = await ProductModel.getAll(search, limit, offset);
-
-      // Add images to each product
+      // Add images
       const productsWithImages = await Promise.all(
         products.map(async (p) => ({
           ...p,
@@ -45,14 +53,23 @@ class ProductController {
         }))
       );
 
-      // Get total count for pagination
-      const total = await ProductModel.getTotalCount(search);
+      // Counts
+      const recordsTotal = await ProductModel.getTotalCount({});
+      const recordsFiltered = await ProductModel.getTotalCount(search);
 
-      res.json({ success: true, data: productsWithImages, total });
+      res.json({
+        draw,
+        recordsTotal,
+        recordsFiltered,
+        data: productsWithImages,
+      });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      console.error(err);
+      res.status(500).json({ error: err.message });
     }
   }
+
+
 
 
   static async findById(id) {
@@ -93,7 +110,7 @@ class ProductController {
         req.files.map(file =>
           ProductImageModel.addProductImage({
             product_id: productId,
-            image: `/uploads/products/${category_id}/${file.filename}`
+            image: `products/${category_id}/${file.filename}`
           })
         )
       );
@@ -118,7 +135,7 @@ class ProductController {
 
       const addedImages = [];
       for (const file of req.files) {
-        const imagePath = `/uploads/products/${category_id}/${file.filename}`;
+        const imagePath = `products/${category_id}/${file.filename}`;
         const imageId = await ProductImageModel.addProductImage({ product_id, image: imagePath });
         addedImages.push({ id: imageId, image: imagePath });
       }

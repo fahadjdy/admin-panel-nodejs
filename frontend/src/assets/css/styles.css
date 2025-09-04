@@ -13,3 +13,32 @@
   --white-color: #fff;
   --black-color: #000;
 }
+
+
+
+/* Datatable  */
+
+/* in your global.css or scoped style */
+table.dataTable {
+  @apply w-full border border-gray-300 rounded-lg shadow-sm;
+}
+
+table.dataTable thead th {
+  @apply bg-gray-100 text-gray-700 font-semibold px-4 py-2;
+}
+
+table.dataTable tbody td {
+  @apply px-4 py-2 border-t;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  @apply border border-gray-300 rounded-md px-2 py-1;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  @apply px-3 py-1 border rounded-md mx-1 cursor-pointer text-gray-700 bg-gray-100;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  @apply bg-blue-500 text-white;
+}
