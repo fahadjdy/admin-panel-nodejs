@@ -90,8 +90,8 @@ export default {
         searching: true,
         pagingType: "full_numbers",
         lengthMenu: [
-            [5, 10, 20, 30,50, 100], 
-            [5, 10, 20, 30,50, 100]  
+            [10, 20, 30,50, 100], 
+            [10, 20, 30,50, 100]  
         ],
         ajax: function (data, callback) {
           const params = {

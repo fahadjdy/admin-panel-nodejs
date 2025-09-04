@@ -128,7 +128,8 @@ export default {
   border-radius: 0.375rem;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   padding: 0.25rem 0;
-  z-index: 50;
+  z-index: 9990;
+  display: block;
 }
 
 .dropdown-item {
