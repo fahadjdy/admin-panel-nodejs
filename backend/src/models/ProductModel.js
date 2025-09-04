@@ -17,9 +17,9 @@ class ProductModel {
 
     // Filters
     if (filter) {
-      if (filter.category) {
+      if (filter.category_id) {
         query += " AND category_id = ?";
-        params.push(filter.category);
+        params.push(filter.category_id);
       }
       if (filter.status) {
         query += " AND status = ?";

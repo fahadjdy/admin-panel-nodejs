@@ -33,7 +33,7 @@ class ProductController {
       const orderColumn = req.query[`columns[${orderColumnIndex}][data]`] || "id";
       // Filters
       const filters = {
-        category: req.query.category || null,
+        category_id: req.query.category_id || null,
         status: req.query.status || null,
         slug: req.query.slug || null,
         name: req.query.name || null,

@@ -11,7 +11,7 @@
                     <i class="fas fa-layer-group"></i>
                 </span>
                 <select
-                v-model="filters.category"
+                v-model="filters.category_id"
                 class="form-select"
                 @change="reloadTable"
                 >
@@ -76,7 +76,7 @@ export default {
   name: "Product",
   setup() {
     const filters = ref({
-      category: "",
+      category_id: "",
       status: "",
     });
 
@@ -101,7 +101,7 @@ export default {
             search: data.search.value,
             order: data.order,
             columns: data.columns,
-            category: filters.value.category,
+            category_id: filters.value.category_id,
             status: filters.value.status,
           };
 
