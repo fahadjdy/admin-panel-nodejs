@@ -49,7 +49,7 @@ class ProductModel {
   }
 
   static async getTotalCount(filterObj = {}) {
-    const { search, filter } = filterObj;
+    const { search, filter} = filterObj;
 
     let query = "SELECT COUNT(*) as total FROM products WHERE is_deleted = 0";
     const params = [];
