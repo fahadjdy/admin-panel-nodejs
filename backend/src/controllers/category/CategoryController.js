@@ -7,14 +7,34 @@ class CategoryController {
   // Get all categories
   static async getCategories(req, res) {
     try {
+      // Pagination
       const limit = parseInt(req.query.limit) || 10;
       const offset = parseInt(req.query.offset) || 0;
-      const categories = await CategoryModel.getAll(limit, offset);
-      res.json({ success: true, data: categories , total : await CategoryModel.getTotalCount()});
+
+      // Search and filters from query params
+      const searchQuery = req.query.search || '';
+      const filters = {
+        name: req.query.name || null,
+        slug: req.query.slug || null,
+        parent_id: req.query.parent_id || null,
+        status: req.query.status || null,
+      };
+
+      // Prepare search object
+      const search = { search: searchQuery, filter: filters };
+
+      // Fetch categories
+      const categories = await CategoryModel.getAll(search, limit, offset);
+
+      // Total count should respect the same search & filters
+      const total = await CategoryModel.getTotalCount(search);
+
+      res.json({ success: true, data: categories, total });
     } catch (err) {
       res.status(500).json({ success: false, error: err.message });
     }
   }
+
 
   // Create category
   static async createCategory(req, res) {

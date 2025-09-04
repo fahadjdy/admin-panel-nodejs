@@ -69,7 +69,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in testimonials" :key="item.id" class="hover:bg-gray-50">
+          <tr v-for="(item, index) in testimonials" :key="item.id" class="hover:bg-gray-50 text-center">
             <td class="border px-4 py-2">{{ index + 1 }}</td>
             <td class="border px-4 py-2">
               <img v-if="item.image" :src="`${imageUrl}/${item.image}`" class="w-12 h-12 rounded-full object-cover" />
@@ -77,16 +77,16 @@
             <td class="border px-4 py-2">{{ item.name }}</td>
             <td class="border px-4 py-2">{{ item.designation }}</td>
             <td class="border px-4 py-2">
-              <span :class="item.status === 'Published' ? 'text-green-600' : 'text-gray-600'">
+              <span :class="item.status === 'Published' ? 'bg-green-200 px-3 py-1 rounded text-green-800' : 'bg-gray-200 text-gray-800 px-7 py-1 rounded'">
                 {{ item.status }}
               </span>
             </td>
             <td class="border px-4 py-2 ">
-              <button @click="editTestimonial(item.id)" class="text-blue-600 hover:underline">
-                <i class="fas fa-edit"></i> Edit
+              <button @click="editTestimonial(item.id)" class="text-primary-600 hover:underline mx-4">
+                <i class="fas fa-edit"></i> 
               </button>
               <button @click="deleteTestimonial(item.id)" class="text-red-600 hover:underline">
-                <i class="fas fa-trash"></i> Delete
+                <i class="fas fa-trash"></i> 
               </button>
             </td>
           </tr>
@@ -197,7 +197,7 @@ export default {
       const data = this.testimonials.find(t => t.id === id);
       if (data) {
         this.testimonial = { ...data, image: null };
-        this.imagePreview = data.image ? `${this.imageUrl}/testimonial/${data.image}` : "";
+        this.imagePreview = data.image ? `${this.imageUrl}/${data.image}` : "";
         this.isEdit = true;
         this.selectedId = id;
         this.showModal = true;
@@ -208,10 +208,14 @@ export default {
         try {
           const response = await TestimonialServices.delete(id);
           if (response.success) {
-            alert(response.message || "Deleted successfully!");
+            this.isSuccess = true;
+            this.isError = false;
+            this.successMessage = response.message || "Deleted successfully!";
             this.getTestimonials();
           } else {
-            alert(response.message || "Failed to delete.");
+            this.isSuccess = false;
+            this.isError = true;
+            this.errorMessage = response.message || "Failed to delete.";
           }
         } catch (err) {
           alert(err.response?.data?.message || "Something went wrong!");

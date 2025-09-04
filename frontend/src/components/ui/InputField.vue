@@ -6,7 +6,7 @@
       :value="modelValue"
       :placeholder="placeholder"
       @input="$emit('update:modelValue', $event.target.value)"
-      required
+      :required="required"
     />
     <label :for="id">{{ label }}</label>
   </div>
@@ -21,6 +21,7 @@ export default {
     placeholder: { type: String, default: "" },
     label: { type: String},
     id: { type: String},
+    required: { type: Boolean, default: false },
   },
 };
 </script>

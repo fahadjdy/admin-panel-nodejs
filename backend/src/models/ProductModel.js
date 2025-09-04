@@ -2,21 +2,74 @@ import pool from "../config/db.js";
 
 class ProductModel {
   // Get all products (excluding deleted)
-  static async getAll(limit, offset) {
-    const [rows] = await pool.query(
-      "SELECT * FROM products WHERE is_deleted = 0 ORDER BY id DESC LIMIT ? OFFSET ?",
-      [limit, offset]
-    );
+  static async getAll(searchObj, limit, offset) {
+    const { search, filter } = searchObj;
+
+    let query = "SELECT id, category_id, name, slug, description, status, created_at, updated_at FROM products WHERE is_deleted = 0";
+    const params = [];
+
+    // Search by name or description
+    if (search) {
+      query += " AND (name LIKE ? OR description LIKE ?)";
+      const searchTerm = `%${search}%`;
+      params.push(searchTerm, searchTerm);
+    }
+
+    // Filters
+    if (filter) {
+      if (filter.category_id) {
+        query += " AND category_id = ?";
+        params.push(filter.category_id);
+      }
+      if (filter.status) {
+        query += " AND status = ?";
+        params.push(filter.status);
+      }
+      if (filter.slug) {
+        query += " AND slug = ?";
+        params.push(filter.slug);
+      }
+      if (filter.name) {
+        query += " AND name = ?";
+        params.push(filter.name);
+      }
+    }
+
+    // Ordering and pagination
+    query += " ORDER BY id DESC LIMIT ? OFFSET ?";
+    params.push(limit, offset);
+
+    const [rows] = await pool.query(query, params);
     return rows;
   }
 
-  // total count 
-  static async getTotalCount() {
-    const [rows] = await pool.query(
-      "SELECT COUNT(*) as total FROM products WHERE is_deleted = 0"
-    );
+  static async getTotalCount(searchObj) {
+    const { search, filter } = searchObj;
+
+    let query = "SELECT COUNT(*) as total FROM products WHERE is_deleted = 0";
+    const params = [];
+
+    if (search) {
+      query += " AND (name LIKE ? OR description LIKE ?)";
+      const searchTerm = `%${search}%`;
+      params.push(searchTerm, searchTerm);
+    }
+
+    if (filter) {
+      if (filter.category_id) {
+        query += " AND category_id = ?";
+        params.push(filter.category_id);
+      }
+      if (filter.status) {
+        query += " AND status = ?";
+        params.push(filter.status);
+      }
+    }
+
+    const [rows] = await pool.query(query, params);
     return rows[0].total;
   }
+
   
   // Get product by ID
   static async getById(id) {

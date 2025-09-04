@@ -15,7 +15,7 @@
         <div class="space-y-4">
           <InputField v-model="user.name" id="name" label="Name" type="text" placeholder="Enter User Name" />
           <InputField v-model="user.email" id="email" label="Email" type="email" placeholder="Enter User Email" />
-          <InputField v-model="user.password" id="password" label="Password" type="password" placeholder="Enter Password" />
+          <InputField v-model="user.password" id="password" label="Password" type="password" placeholder="Enter Password" :required="!isEdit" />
 
           <!-- Status Select -->
             <fieldset class="border border-gray-300 rounded-md p-4 text-center">
@@ -35,10 +35,10 @@
           </UiButton>
         </div>
 
-        <alertBox v-if="isSuccess" :message="successMessage" type="success" @close="closeAlert" />
-        <alertBox v-if="isError" :message="errorMessage" type="error" @close="closeAlert" />
       </form>
     </Modal>
+    <alertBox v-if="isSuccess" :message="successMessage" type="success" @close="closeAlert" />
+    <alertBox v-if="isError" :message="errorMessage" type="error" @close="closeAlert" />
 
     <!-- Users Table -->
     <fieldset class="border border-gray-300 rounded-md p-4">
@@ -54,21 +54,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(userItem, index) in users" :key="userItem.id" class="hover:bg-gray-50">
+          <tr v-for="(userItem, index) in users" :key="userItem.id" class="hover:bg-gray-50 text-center">
             <td class="border px-4 py-2">{{ index + 1 }}</td>
             <td class="border px-4 py-2">{{ userItem.name }}</td>
             <td class="border px-4 py-2">{{ userItem.email }}</td>
             <td class="border px-4 py-2">
-                <span :class="userItem.status === 'Active' ? 'text-green-600' : 'text-red-600'">
+                <span :class="userItem.status === 'Active' ? 'bg-green-200 px-3 py-1 rounded text-green-800' : 'bg-gray-200 text-gray-800 px-7 py-1 rounded'">
                     {{ userItem.status }}
                 </span>
             </td>
             <td class="border px-4 py-2 ">
-              <button @click="editUser(userItem.id)" class="text-blue-600 hover:underline">
-                <i class="fas fa-edit"></i> Edit
+              <button @click="editUser(userItem.id)" class="text-primary-600 hover:underline mx-4">
+                <i class="fas fa-edit"></i> 
               </button>
               <button @click="deleteUser(userItem.id)" class="text-red-600 hover:underline">
-                <i class="fas fa-trash"></i> Delete
+                <i class="fas fa-trash"></i> 
               </button>
             </td>
           </tr>
@@ -175,10 +175,14 @@ export default {
         try {
           const response = await UserServices.deleteUser(id);
           if (response.success) {
-            alert(response.message || "User deleted successfully!");
+            this.isSuccess = true;
+            this.isError = false;
+            this.successMessage = response.message || "User deleted successfully!";
             this.getUsers();
           } else {
-            alert(response.message || "Failed to delete user.");
+             this.isSuccess = false;
+            this.isError = true;
+            this.errorMessage = response.message || "Failed to delete user.";
           }
         } catch (err) {
           alert(err.response?.data?.message || "Something went wrong!");

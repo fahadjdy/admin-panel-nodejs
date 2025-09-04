@@ -18,19 +18,42 @@ function deleteFiles(paths = []) {
 class ProductController {
   static async getAll(req, res) {
     try {
-      // limit and offset
+      // Pagination
       const limit = parseInt(req.query.limit) || 10;
       const offset = parseInt(req.query.offset) || 0;
 
-      const products = await ProductModel.getAll(limit, offset);
+      // Search and filters from query params
+      const searchQuery = req.query.search || '';
+      const filters = {
+        category: req.query.category || null,
+        status: req.query.status || null,
+        slug: req.query.slug || null,
+        name: req.query.name || null
+      };
+
+      // Prepare search object
+      const search = { search: searchQuery, filter: filters };
+
+      // Fetch products from model
+      const products = await ProductModel.getAll(search, limit, offset);
+
+      // Add images to each product
       const productsWithImages = await Promise.all(
-        products.map(async (p) => ({ ...p, images: await ProductImageModel.getByProductId(p.id) }))
+        products.map(async (p) => ({
+          ...p,
+          images: await ProductImageModel.getByProductId(p.id),
+        }))
       );
-      res.json({ success: true, data: productsWithImages ,total : await ProductModel.getTotalCount()});
+
+      // Get total count for pagination
+      const total = await ProductModel.getTotalCount(search);
+
+      res.json({ success: true, data: productsWithImages, total });
     } catch (err) {
       res.status(500).json({ success: false, error: err.message });
     }
   }
+
 
   static async findById(id) {
     const product = await ProductModel.getById(id);
