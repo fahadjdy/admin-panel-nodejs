@@ -81,7 +81,7 @@
                 {{ item.status }}
               </span>
             </td>
-            <td class="border px-4 py-2 flex gap-2">
+            <td class="border px-4 py-2 ">
               <button @click="editTestimonial(item.id)" class="text-blue-600 hover:underline">
                 <i class="fas fa-edit"></i> Edit
               </button>
